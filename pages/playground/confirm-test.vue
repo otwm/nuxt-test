@@ -19,9 +19,12 @@
   import ConfirmText from '../../components/ConfirmText'
 
   let confirmResolve;
-  const Confirm = ({ open, message, component, internalComp, setText }) => new Promise((resolve) => {
+  const Confirm = ({ open, message, component, internalComp, setText, setComponent }) => new Promise((resolve) => {
     if (message) {
       setText(message)
+    }
+    if (component) {
+      setComponent(component)
     }
     open()
     confirmResolve = resolve
@@ -67,6 +70,7 @@
         if (!await Confirm({
           component: Mytest,
           open: this.openConfirm,
+          setComponent: this.setComponent,
         })) {
           console.log('not ok');
           return;
@@ -105,8 +109,12 @@
         this.confirm = false
       },
       setText(text) {
-        this.type = 'text';
-        this.text = text;
+        this.type = 'text'
+        this.text = text
+      },
+      setComponent (comp) {
+        this.type = 'component'
+        this.confirmView = comp
       },
       Yes, No,
     }
