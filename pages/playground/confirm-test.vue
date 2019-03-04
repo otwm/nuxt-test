@@ -1,13 +1,13 @@
 <template>
   <section class="container">
     <confirm-dialog
+      ref="cf"
       :open="confirm"
       @dismiss="No(closeConfirm)"
       @confirm="Yes(closeConfirm)"
     >
-      <div>
-        밥은 먹었니?
-      </div>
+      <confirm-text :text="text" v-if="type === 'text'"/>
+      <component v-bind:is="confirmView" v-if="type === 'component'"></component>
     </confirm-dialog>
     <button @click="confTest">ok</button>
   </section>
@@ -15,9 +15,14 @@
 
 <script>
   import ConfirmDialog from '../../components/ConfirmDialog'
+  import Mytest from '../../components/Mytest'
+  import ConfirmText from '../../components/ConfirmText'
 
   let confirmResolve;
-  const Confirm = ({ open }) => new Promise((resolve) => {
+  const Confirm = ({ open, message, component, internalComp, setText }) => new Promise((resolve) => {
+    if (message) {
+      setText(message)
+    }
     open()
     confirmResolve = resolve
   })
@@ -33,18 +38,34 @@
 
   export default {
     components: {
-      ConfirmDialog
+      ConfirmDialog,
+      ConfirmText,
     },
     data() {
       return {
         confirm: false,
+        confirmView: Mytest,
+        text: null,
+        type: 'component',
       };
     },
     methods: {
       async confTest () {
-        // case1
+        // case1: text type
         if (!await Confirm({
           message: 'ok?',
+          open: this.openConfirm,
+          setText: this.setText,
+        })) {
+          console.log('not ok');
+          return;
+        }
+
+        console.log('ok');
+
+        // case2: external component
+        if (!await Confirm({
+          component: Mytest,
           open: this.openConfirm,
         })) {
           console.log('not ok');
@@ -53,23 +74,25 @@
 
         console.log('ok');
 
-        // case2
+        // case3: internal component
         if (!await Confirm({
-          component: 'ok?',
+          internalComp: 'my-internal',
           open: this.openConfirm,
         })) {
-          console.log('ok')
+          console.log('not ok');
           return;
         }
 
         console.log('ok');
 
-        // case3
+        // case4: object override
         if (!await Confirm({
-          confirm: 'ok?',
+          internalComp: {
+
+          },
           open: this.openConfirm,
         })) {
-          console.log('ok')
+          console.log('not ok');
           return;
         }
 
@@ -80,6 +103,10 @@
       },
       closeConfirm () {
         this.confirm = false
+      },
+      setText(text) {
+        this.type = 'text';
+        this.text = text;
       },
       Yes, No,
     }
