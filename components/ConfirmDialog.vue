@@ -1,21 +1,34 @@
 <template>
-  <div>
-    test
+  <div :class="open? 'confirm show' : 'confirm'">
+    <slot>
+      test<br/>
+    </slot>
+    <button @click="yes">Yes</button>
+    <button @click="no">No</button>
   </div>
 </template>
 
 <script>
   export default {
+    props: {
+      open: Boolean,
+    },
+    methods: {
+      yes() {
+        this.$emit('confirm')
+      },
+      no() {
+        this.$emit('dismiss')
+      },
+    }
   }
 </script>
 
 <style>
-  .container {
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
+  .confirm {
+    display: none;
+  }
+  .confirm.show {
+    display: block;
   }
 </style>
-

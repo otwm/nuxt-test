@@ -2,8 +2,8 @@
   <section class="container">
     <confirm-dialog
       :open="confirm"
-      @dismiss="No(close)"
-      @confirm="Yes(open)"
+      @dismiss="No(closeConfirm)"
+      @confirm="Yes(closeConfirm)"
     >
       <div>
         밥은 먹었니?
@@ -22,8 +22,8 @@
     confirmResolve = resolve
   })
 
-  const Yes = (open) => {
-    open()
+  const Yes = (close) => {
+    close()
     if ( confirmResolve ) confirmResolve(true)
   }
   const No = (close) => {
