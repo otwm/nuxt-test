@@ -14,9 +14,14 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import ConfirmDialog from '../../components/ConfirmDialog'
   import Mytest from '../../components/Mytest'
   import ConfirmText from '../../components/ConfirmText'
+
+  const MyInternal = Vue.component('MyInternal', {
+    template: '<div>my-internal</div>',
+  })
 
   let confirmResolve;
   const Confirm = ({ open, message, component, internalComp, setText, setComponent }) => new Promise((resolve) => {
@@ -25,6 +30,9 @@
     }
     if (component) {
       setComponent(component)
+    }
+    if (internalComp) {
+      setComponent(internalComp)
     }
     open()
     confirmResolve = resolve
@@ -43,6 +51,7 @@
     components: {
       ConfirmDialog,
       ConfirmText,
+      MyInternal,
     },
     data() {
       return {
@@ -80,8 +89,9 @@
 
         // case3: internal component
         if (!await Confirm({
-          internalComp: 'my-internal',
+          internalComp: 'MyInternal',
           open: this.openConfirm,
+          setComponent: this.setComponent,
         })) {
           console.log('not ok');
           return;
