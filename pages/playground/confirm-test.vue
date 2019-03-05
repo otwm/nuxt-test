@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import { Confirm } from '../../lib/confirmFactory'
+  import { Confirm } from '../../lib/confirmBinder'
   import Mytest from '../../components/Mytest'
 
   export default {

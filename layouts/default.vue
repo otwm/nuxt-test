@@ -16,7 +16,7 @@
 <script>
   import ConfirmDialog from '../components/ConfirmDialog'
   import ConfirmText from '../components/ConfirmText'
-  import confirmFactory from '../lib/confirmFactory'
+  import confirmFactory from '../lib/confirmBinder'
 
   export default {
     components: {
