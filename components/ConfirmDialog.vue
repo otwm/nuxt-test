@@ -12,6 +12,12 @@
   export default {
     props: {
       open: Boolean,
+      updatedHook: {
+        type: Function,
+      }
+    },
+    updated () {
+      if (this.updatedHook) this.updatedHook()
     },
     methods: {
       yes() {

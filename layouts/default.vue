@@ -2,18 +2,19 @@
   <div>
     <nuxt/>
     <confirm-dialog
-      ref="cf"
       :open="confirm"
       @dismiss="No(closeConfirm)"
       @confirm="Yes(closeConfirm)"
+      :updatedHook="confirmUpdatedHook"
     >
       <confirm-text :text="text" v-if="type === 'text'"/>
-      <component v-bind:is="confirmView" v-if="type === 'component'"></component>
+      <div id="dos-custom-confirm" v-if="type === 'component'"/>
     </confirm-dialog>
   </div>
 </template>
 
 <script>
+  import Vue from 'vue'
   import ConfirmDialog from '../components/ConfirmDialog'
   import ConfirmText from '../components/ConfirmText'
   import confirmBinder from '../lib/confirmBinder'
@@ -21,30 +22,32 @@
   export default {
     components: {
       ConfirmDialog,
-      ConfirmText,
+      ConfirmText
     },
-    data() {
+    data () {
       return {
         confirm: false,
         confirmView: null,
         text: null,
-        type: 'component',
-      };
+        type: null,
+        confirmUpdatedHook: null
+      }
     },
-    mounted() {
+    mounted () {
       const {
         openConfirm,
         closeConfirm,
         setText,
         setComponent,
+        clean
       } = this
       confirmBinder.bind({
         openConfirm,
         closeConfirm,
         setText,
         setComponent,
+        clean
       })
-      window.c = confirmBinder
     },
     methods: {
       openConfirm () {
@@ -53,23 +56,36 @@
       closeConfirm () {
         this.confirm = false
       },
-      setText(text) {
+      setText (text) {
         this.type = 'text'
         this.text = text
       },
-      setComponent (comp) {
+      setComponent (comp, args = {}) {
         this.type = 'component'
-        this.confirmView = comp
+
+        const CompnentClass = Vue.extend(comp)
+        const instance = new CompnentClass(args)
+        const attach = () => {
+          if (!instance || !document.getElementById('dos-custom-confirm')) return
+          const component = instance.$mount()
+          document.getElementById('dos-custom-confirm').appendChild(component.$el)
+        }
+        this.confirmUpdatedHook = attach
       },
-      Yes() {
-        // TODO: hook impl
+      clean () {
+        this.confirm = false
+        this.confirmView = null
+        this.text = null
+        this.type = null
+        this.confirmUpdatedHook = null
+      },
+      Yes () {
         confirmBinder.Yes()
       },
-      No() {
-        // TODO: hook impl
+      No () {
         confirmBinder.No()
-      },
-    },
+      }
+    }
   }
 
 </script>
