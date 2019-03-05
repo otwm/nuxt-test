@@ -1,5 +1,5 @@
 <template>
-  <div :class="open? 'confirm show' : 'confirm'">
+  <div :class="open? 'confirm show center' : 'confirm center'">
     <slot>
       test<br/>
     </slot>
@@ -36,5 +36,17 @@
   }
   .confirm.show {
     display: block;
+  }
+
+  .center {
+    background: black;
+    color: white;
+    width: 200px;
+    height: 100px;
+    margin: -70px 0 0 -120px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    padding: 20px;
   }
 </style>
