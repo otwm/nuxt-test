@@ -5,13 +5,12 @@
 </template>
 
 <script>
-  import confirmFactory from '../../lib/confirmFactory'
+  import { Confirm } from '../../lib/confirmFactory'
   import Mytest from '../../components/Mytest'
 
   export default {
     methods: {
       async startConfirm () {
-        const Confirm = confirmFactory.Confirm
         // case1: text type
         if (!await Confirm({
           message: 'ok?',
