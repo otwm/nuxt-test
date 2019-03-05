@@ -18,30 +18,6 @@
   import ConfirmText from '../components/ConfirmText'
   import confirmFactory from '../lib/confirmFactory'
 
-  let confirmResolve;
-  const Confirm = ({ open, message, component, internalComp, setText, setComponent }) => new Promise((resolve) => {
-    if (message) {
-      setText(message)
-    }
-    if (component) {
-      setComponent(component)
-    }
-    if (internalComp) {
-      setComponent(internalComp)
-    }
-    open()
-    confirmResolve = resolve
-  })
-
-  const Yes = (close) => {
-    close()
-    if ( confirmResolve ) confirmResolve(true)
-  }
-  const No = (close) => {
-    close()
-    if ( confirmResolve ) confirmResolve(false)
-  }
-
   export default {
     components: {
       ConfirmDialog,
@@ -84,7 +60,14 @@
         this.type = 'component'
         this.confirmView = comp
       },
-      Yes, No,
+      Yes() {
+        // TODO: hook impl
+        confirmFactory.Yes()
+      },
+      No() {
+        // TODO: hook impl
+        confirmFactory.No()
+      },
     },
   }
 

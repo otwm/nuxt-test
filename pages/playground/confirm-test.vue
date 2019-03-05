@@ -6,6 +6,7 @@
 
 <script>
   import confirmFactory from '../../lib/confirmFactory'
+  import Mytest from '../../components/Mytest'
 
   export default {
     methods: {
@@ -15,9 +16,29 @@
         if (!await Confirm({
           message: 'ok?',
         })) {
-          console.log('not ok');
+          console.log('not ok1');
           return;
         }
+
+        console.log('ok1');
+
+        if (!await Confirm({
+          message: 'ok2?',
+        })) {
+          console.log('not ok2');
+          return;
+        }
+
+        console.log('ok2');
+
+        if (!await Confirm({
+          component: Mytest,
+        })) {
+          console.log('not ok3');
+          return;
+        }
+
+        console.log('ok3');
       },
     },
   }
