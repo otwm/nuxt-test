@@ -16,7 +16,7 @@
 <script>
   import ConfirmDialog from '../components/ConfirmDialog'
   import ConfirmText from '../components/ConfirmText'
-  import confirmFactory from '../lib/confirmBinder'
+  import confirmBinder from '../lib/confirmBinder'
 
   export default {
     components: {
@@ -38,12 +38,13 @@
         setText,
         setComponent,
       } = this
-      confirmFactory.bind({
+      confirmBinder.bind({
         openConfirm,
         closeConfirm,
         setText,
         setComponent,
       })
+      window.c = confirmBinder
     },
     methods: {
       openConfirm () {
@@ -62,11 +63,11 @@
       },
       Yes() {
         // TODO: hook impl
-        confirmFactory.Yes()
+        confirmBinder.Yes()
       },
       No() {
         // TODO: hook impl
-        confirmFactory.No()
+        confirmBinder.No()
       },
     },
   }

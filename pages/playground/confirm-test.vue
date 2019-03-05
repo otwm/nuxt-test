@@ -5,12 +5,13 @@
 </template>
 
 <script>
-  import { Confirm } from '../../lib/confirmBinder'
+  import confirmBinder from '../../lib/confirmBinder'
   import Mytest from '../../components/Mytest'
 
   export default {
     methods: {
       async startConfirm () {
+        const { Confirm } = confirmBinder
         // case1: text type
         if (!await Confirm({
           message: 'ok?',
